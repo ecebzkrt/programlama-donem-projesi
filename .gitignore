@@ -1,0 +1,4 @@
+*.o
+program
+.DS_Store 
+.vscode/
