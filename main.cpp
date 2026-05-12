@@ -34,7 +34,7 @@ if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 {
  player.move({speed,0.f});
 }
-if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)&&isOnGround)
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)&&isOnGround)
 {
 velocityY=jumpPower;
 isOnGround=false;
