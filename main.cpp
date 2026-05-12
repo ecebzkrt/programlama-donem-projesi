@@ -41,6 +41,15 @@ isOnGround=false;
 }
 velocityY+=gravity;
 player.move({0.f,velocityY});
+if(player.getPosition().x<0)
+{
+player.setPosition({0.f,player.getPosition().y});
+}
+if(player.getPosition().x+player.getSize().x>800)
+{
+ player.setPosition({800.f-player.getSize().x,player.getPosition().y});
+}
+
 if(player.getGlobalBounds().findIntersection(ground.getGlobalBounds()))
 {
 player.setPosition({player.getPosition().x,ground.getPosition().y-player.getSize().y});
