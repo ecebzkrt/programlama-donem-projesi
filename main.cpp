@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <string>
 int main()
 { sf::RenderWindow window(sf::VideoMode({800,600}),"platform oyunu");
 window.setFramerateLimit(60);
@@ -28,10 +29,31 @@ platforms.push_back(platform2);
   player.setFillColor(sf::Color::Green);
   player.setPosition({100.f,50.f});
   //coin
-  sf::CircleShape coin(15.f);
-  coin.setFillColor(sf::Color::Yellow);
-  coin.setPosition({560.f,260.f});
+  std::vector<sf::CircleShape>Coins;
+  sf::CircleShape coin1(15.f);
+  coin1.setFillColor(sf::Color::Yellow);
+  coin1.setPosition({560.f,260.f});
+  Coins.push_back(coin1);
+  sf::CircleShape coin2(15.f);
+  coin2.setFillColor(sf::Color::Yellow);
+  coin2.setPosition({300.f,360.f});
+  Coins.push_back(coin2);
   bool coinCollected=false;
+
+  sf::CircleShape coin3(15.f);
+  coin3.setFillColor(sf::Color::Yellow);
+  coin3.setPosition({120.f,510.f});
+  Coins.push_back(coin3);
+  int score=0;
+  sf::Font font;
+  if(!font.openFromFile("/System/Library/Fonts/Supplemental/Arial.ttf"))
+{
+    return -1;
+}
+  sf::Text scoreText(font);
+  scoreText.setCharacterSize(24);
+  scoreText.setFillColor(sf::Color::White);
+  scoreText.setPosition({10.f,10.f});
 
 while(window.isOpen())
 {
@@ -80,21 +102,34 @@ velocityY=0.f;
 isOnGround=true;
 }
 }
-if(!coinCollected&&player.getGlobalBounds().findIntersection(coin.getGlobalBounds()))
+for(auto it=Coins.begin();it!=Coins.end();)
 {
-coinCollected=true;
+if(player.getGlobalBounds().findIntersection(it->getGlobalBounds()))
+{
+ it=Coins.erase(it);
+ score++;
+}
+else{
+
+  ++it;
+}
 }
 
+
+
+
+scoreText.setString("score: "+std::to_string(score));
 window.clear();
 for(auto&platform:platforms)
 {
  window.draw(platform);
 }
-if(!coinCollected)
+for(auto&coin:Coins)
 {
 window.draw(coin);
 }
 window.draw(player);
+window.draw(scoreText);
 window.display();
 
 }
