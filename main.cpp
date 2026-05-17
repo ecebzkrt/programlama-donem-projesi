@@ -14,12 +14,12 @@ ground.setFillColor(sf::Color::Blue);
 ground.setPosition({0.f,550.f});
 std::vector<sf::RectangleShape>platforms;
 platforms.push_back(ground);
-sf::RectangleShape platform1({30.f,200.f});
+sf::RectangleShape platform1({30.f,100.f});
 platform1.setFillColor(sf::Color::Red);
 platform1.setPosition({250.f,400.f});
 platforms.push_back(platform1);
 
-sf::RectangleShape platform2({30.f,200.f});
+sf::RectangleShape platform2({30.f,100.f});
 platform2.setFillColor(sf::Color::Magenta);
 platform2.setPosition({500.f,300.f});
 platforms.push_back(platform2);
@@ -28,6 +28,8 @@ platforms.push_back(platform2);
   sf::RectangleShape player({50.f,70.f});
   player.setFillColor(sf::Color::Green);
   player.setPosition({100.f,50.f});
+  //kamera olusturma
+  sf::View view(sf::FloatRect({0.f,0.f},{800.f,600.f}));
   //coin
   std::vector<sf::CircleShape>Coins;
   sf::CircleShape coin1(15.f);
@@ -81,6 +83,8 @@ isOnGround=false;
 }
 velocityY+=gravity;
 player.move({0.f,velocityY});
+view.setCenter({player.getPosition().x+ player.getSize().x/2,300.f});
+window.setView(view);
 if(player.getPosition().x<0)
 {
 player.setPosition({0.f,player.getPosition().y});
