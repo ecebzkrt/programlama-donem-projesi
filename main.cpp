@@ -174,27 +174,21 @@ for(auto&coin:coins)
 {
 window.draw(coin);
 }
-playerSprite.setPosition(player.getPosition());
 if(facingRight)
 {
-playerSprite.setScale({0.12f,0.12f});
+playerSprite.setScale({0.15f,0.15f});
+playerSprite.setPosition({player.getPosition().x+15.f,player.getPosition().y-45.f});
 }
 else
 {
-playerSprite.setScale({-0.12f,0.12f});
+playerSprite.setScale({-0.15f,0.15f});
+playerSprite.setPosition({player.getPosition().x+player.getSize().x,player.getPosition().y});
 }
 window.draw(playerSprite);
 window.draw(scoreText);
 window.display();
 
 }
-
-
-
-
-
-
-
 
 
 
