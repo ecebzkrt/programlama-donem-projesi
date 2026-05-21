@@ -51,6 +51,7 @@ platforms.push_back(platform5);
     return -1;
   }
   sf::Sprite playerSprite(playerTexture);
+  bool facingRight=true;
   playerSprite.setScale({0.15f,.15f});
   //kamera olusturma
   sf::View view(sf::FloatRect({0.f,0.f},{800.f,600.f}));
@@ -96,11 +97,13 @@ while(window.isOpen())
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 {
  player.move({-speed,0.f});
+ facingRight=false;
 }
 //sag hareket icin
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 {
  player.move({speed,0.f});
+ facingRight=true;
 }
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)&&isOnGround)
 {
@@ -172,6 +175,14 @@ for(auto&coin:coins)
 window.draw(coin);
 }
 playerSprite.setPosition(player.getPosition());
+if(facingRight)
+{
+playerSprite.setScale({0.12f,0.12f});
+}
+else
+{
+playerSprite.setScale({-0.12f,0.12f});
+}
 window.draw(playerSprite);
 window.draw(scoreText);
 window.display();
