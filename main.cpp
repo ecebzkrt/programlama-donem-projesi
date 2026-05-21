@@ -44,9 +44,14 @@ platforms.push_back(platform5);
 
 //oyuncu
   sf::RectangleShape player({50.f,70.f});
-  player.setFillColor(sf::Color::Green);
+  player.setFillColor(sf::Color::Transparent);
   player.setPosition({100.f,50.f});
-
+  sf::Texture playerTexture;
+  if(!playerTexture.loadFromFile("player.png")){
+    return -1;
+  }
+  sf::Sprite playerSprite(playerTexture);
+  playerSprite.setScale({0.15f,.15f});
   //kamera olusturma
   sf::View view(sf::FloatRect({0.f,0.f},{800.f,600.f}));
 
@@ -156,9 +161,6 @@ else{
 }
 }
 
-
-
-
 scoreText.setString("score: "+std::to_string(score));
 window.clear();
 for(auto&platform:platforms)
@@ -169,7 +171,8 @@ for(auto&coin:coins)
 {
 window.draw(coin);
 }
-window.draw(player);
+playerSprite.setPosition(player.getPosition());
+window.draw(playerSprite);
 window.draw(scoreText);
 window.display();
 
