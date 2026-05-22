@@ -4,6 +4,43 @@
 #include <iostream>
 #include <cmath>
 
+void resetGameElements(std::vector<sf::CircleShape>&coins,std::vector<sf::RectangleShape>&enemies)
+{
+coins.clear();
+enemies.clear();
+//coinleri ilk konumlariyla yeniden dolduruyorum
+sf::CircleShape coin1(15.f);
+coin1.setFillColor(sf::Color::Yellow);
+coin1.setPosition({560.f,390.f});
+coins.push_back(coin1);
+sf::CircleShape coin2(15.f);
+  coin2.setFillColor(sf::Color::Yellow);
+  coin2.setPosition({300.f,360.f});
+  coins.push_back(coin2);
+
+  sf::CircleShape coin3(15.f);
+  coin3.setFillColor(sf::Color::Yellow);
+  coin3.setPosition({120.f,510.f});
+  coins.push_back(coin3);
+
+  //dusmanlari ilk konumlariyla yeniden dolduruyorum
+  sf::RectangleShape enemy1({50.f,50.f});
+enemy1.setFillColor(sf::Color::White);
+enemy1.setPosition({700.f,500.f});
+enemies.push_back(enemy1);
+
+sf::RectangleShape enemy2({50.f,50.f});
+enemy2.setFillColor(sf::Color::White);
+enemy2.setPosition({1350.f,300.f});
+enemies.push_back(enemy2);
+
+sf::RectangleShape enemy3({50.f,50.f});
+enemy3.setFillColor(sf::Color::White);
+enemy3.setPosition({1700.f,500.f});
+enemies.push_back(enemy3);
+
+}
+
 int main()
 { sf::RenderWindow window(sf::VideoMode({800,600}),"platform oyunu");
 window.setFramerateLimit(60);
@@ -64,34 +101,35 @@ platforms.push_back(platform5);
   sf::CircleShape coin1(15.f);
   coin1.setFillColor(sf::Color::Yellow);
   coin1.setPosition({560.f,390.f});
-  coins.push_back(coin1);
+  
 
   sf::CircleShape coin2(15.f);
   coin2.setFillColor(sf::Color::Yellow);
   coin2.setPosition({300.f,360.f});
-  coins.push_back(coin2);
+  
 
   sf::CircleShape coin3(15.f);
   coin3.setFillColor(sf::Color::Yellow);
   coin3.setPosition({120.f,510.f});
-  coins.push_back(coin3);
+
 
 //dusmanlar
 std::vector<sf::RectangleShape> enemies;
 sf::RectangleShape enemy1({50.f,50.f});
 enemy1.setFillColor(sf::Color::White);
 enemy1.setPosition({700.f,500.f});
-enemies.push_back(enemy1);
+
 
 sf::RectangleShape enemy2({50.f,50.f});
 enemy2.setFillColor(sf::Color::White);
 enemy2.setPosition({1350.f,300.f});
-enemies.push_back(enemy2);
+
 
 sf::RectangleShape enemy3({50.f,50.f});
 enemy3.setFillColor(sf::Color::White);
 enemy3.setPosition({1700.f,500.f});
-enemies.push_back(enemy3);
+resetGameElements(coins,enemies);
+
 sf::Texture enemyTexture;
 if(!enemyTexture.loadFromFile("enemy.png"))
 {
@@ -188,6 +226,7 @@ if(player.getPosition().y>700.f)
 player.setPosition({100.f,50.f});
 velocityY=0.f;
 score=0;
+resetGameElements(coins,enemies);
 }
 
 float cameraX=player.getPosition().x+player.getSize().x/2;
@@ -260,11 +299,13 @@ life--;
 damageClock.restart();
 player.setPosition({100.f,50.f});
 velocityY=0.f;
+resetGameElements(coins,enemies);
 if(life<=0)
 {
 life=3;
 score=0;
 player.setPosition({100.f,50.f});
+resetGameElements(coins,enemies);
 }
 }
 it++;
