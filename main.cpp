@@ -234,11 +234,11 @@ sf::RectangleShape sword({20.f,40.f});
 sword.setFillColor(sf::Color::White);
 if(facingRight)
 {
-sword.setPosition({player.getPosition().x+115.f,player.getPosition().y+35.f});
+sword.setPosition({player.getPosition().x+100.f,player.getPosition().y+35.f});
 }
 else
 {
-sword.setPosition({player.getPosition().x+80.f,player.getPosition().y+35.f});
+sword.setPosition({player.getPosition().x-15.f,player.getPosition().y+35.f});
 }
 for(auto it=enemies.begin();it!=enemies.end();)
 {
@@ -293,8 +293,8 @@ playerSprite.setPosition({player.getPosition().x+15.f,player.getPosition().y-45.
 }
 else
 {
-playerSprite.setScale({spriteScale,spriteScale});
-playerSprite.setPosition({player.getPosition().x+player.getSize().x,player.getPosition().y-45.f});
+playerSprite.setScale({-spriteScale,spriteScale});
+playerSprite.setPosition({player.getPosition().x+player.getSize().x+10.f,player.getPosition().y-45.f});
 }
 window.draw(playerSprite);
 
