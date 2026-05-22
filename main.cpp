@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
+#include <iostream>
+#include <cmath>
+
 int main()
 { sf::RenderWindow window(sf::VideoMode({800,600}),"platform oyunu");
 window.setFramerateLimit(60);
@@ -17,12 +20,12 @@ std::vector<sf::RectangleShape>platforms;
 platforms.push_back(ground);
 
 //platformlar
-sf::RectangleShape platform1({30.f,100.f});
+sf::RectangleShape platform1({200.f,30.f});
 platform1.setFillColor(sf::Color::Red);
 platform1.setPosition({250.f,400.f});
 platforms.push_back(platform1);
 
-sf::RectangleShape platform2({30.f,100.f});
+sf::RectangleShape platform2({200.f,30.f});
 platform2.setFillColor(sf::Color::Magenta);
 platform2.setPosition({500.f,430.f});
 platforms.push_back(platform2);
@@ -52,7 +55,7 @@ platforms.push_back(platform5);
   }
   sf::Sprite playerSprite(playerTexture);
   bool facingRight=true;
-  playerSprite.setScale({0.15f,.15f});
+  
   //kamera olusturma
   sf::View view(sf::FloatRect({0.f,0.f},{800.f,600.f}));
 
@@ -60,7 +63,7 @@ platforms.push_back(platform5);
   std::vector<sf::CircleShape>coins;
   sf::CircleShape coin1(15.f);
   coin1.setFillColor(sf::Color::Yellow);
-  coin1.setPosition({560.f,260.f});
+  coin1.setPosition({560.f,390.f});
   coins.push_back(coin1);
 
   sf::CircleShape coin2(15.f);
@@ -72,6 +75,36 @@ platforms.push_back(platform5);
   coin3.setFillColor(sf::Color::Yellow);
   coin3.setPosition({120.f,510.f});
   coins.push_back(coin3);
+
+//dusmanlar
+std::vector<sf::RectangleShape> enemies;
+sf::RectangleShape enemy1({50.f,50.f});
+enemy1.setFillColor(sf::Color::White);
+enemy1.setPosition({700.f,500.f});
+enemies.push_back(enemy1);
+
+sf::RectangleShape enemy2({50.f,50.f});
+enemy2.setFillColor(sf::Color::White);
+enemy2.setPosition({1350.f,300.f});
+enemies.push_back(enemy2);
+
+sf::RectangleShape enemy3({50.f,50.f});
+enemy3.setFillColor(sf::Color::White);
+enemy3.setPosition({1700.f,500.f});
+enemies.push_back(enemy3);
+sf::Texture enemyTexture;
+if(!enemyTexture.loadFromFile("enemy.png"))
+{
+return -1;
+}
+sf::Sprite enemySprite(enemyTexture);
+sf::Texture swordTexture;
+if(!swordTexture.loadFromFile("sword.png"))
+{
+return -1;
+}
+sf::Sprite swordSprite(swordTexture);
+swordSprite.setOrigin({swordTexture.getSize().x/2.f,swordTexture.getSize().y/2.f});
   //score ayari
   int score=0;
   sf::Font font;
@@ -84,8 +117,22 @@ platforms.push_back(platform5);
   scoreText.setFillColor(sf::Color::White);
   scoreText.setPosition({10.f,10.f});
 
+sf::Text lifeText(font);
+lifeText.setCharacterSize(24);
+lifeText.setFillColor(sf::Color::White);
+lifeText.setPosition({10.f,40.f});
+
+//can hakki
+int life=3;
+bool isAttacking=false;
+sf::Clock attackClock;
+sf::Clock damageClock;
+
+  sf::Clock animationClock;
 while(window.isOpen())
-{
+{float animationTime=animationClock.getElapsedTime().asSeconds();
+  bool isMoving=false;
+  
  while(const std::optional event=window.pollEvent())
  {
   if(event->is<sf::Event::Closed>())
@@ -98,12 +145,30 @@ if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 {
  player.move({-speed,0.f});
  facingRight=false;
+ isMoving=true;
 }
 //sag hareket icin
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 {
  player.move({speed,0.f});
  facingRight=true;
+ isMoving=true;
+}
+
+//saldiri kontrolu
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+{ isAttacking=true;
+  attackClock.restart();
+}
+if(isAttacking&&attackClock.getElapsedTime().asSeconds()>0.2f)
+{
+  isAttacking=false;
+}
+
+  float spriteScale=0.15f;
+  if(isMoving)
+  {
+spriteScale=0.15f+std::sin(animationTime*10.f)*0.01f;
 }
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)&&isOnGround)
 {
@@ -151,6 +216,7 @@ velocityY=0.f;
 isOnGround=true;
 }
 }
+//coin kontrolu
 for(auto it=coins.begin();it!=coins.end();)
 {
 if(player.getGlobalBounds().findIntersection(it->getGlobalBounds()))
@@ -163,8 +229,47 @@ else{
   ++it;
 }
 }
+//dusman kontrolu
+sf::RectangleShape sword({20.f,40.f});
+sword.setFillColor(sf::Color::White);
+if(facingRight)
+{
+sword.setPosition({player.getPosition().x+115.f,player.getPosition().y+35.f});
+}
+else
+{
+sword.setPosition({player.getPosition().x+80.f,player.getPosition().y+35.f});
+}
+for(auto it=enemies.begin();it!=enemies.end();)
+{
+if(isAttacking&&sword.getGlobalBounds().findIntersection(it->getGlobalBounds()))
+{
+ it=enemies.erase(it);
+ score+=2;
+}
+else { 
+  if(player.getGlobalBounds().findIntersection(it->getGlobalBounds())&&damageClock.getElapsedTime().asSeconds()>1.f)
+{
+life--;
+damageClock.restart();
+player.setPosition({100.f,50.f});
+velocityY=0.f;
+if(life<=0)
+{
+life=3;
+score=0;
+player.setPosition({100.f,50.f});
+}
+}
+it++;
+}
+}
 
 scoreText.setString("score: "+std::to_string(score));
+lifeText.setString("can: "+std::to_string(life));
+scoreText.setPosition({cameraX-390.f,10.f});
+lifeText.setPosition({cameraX-390.f,40.f});
+
 window.clear();
 for(auto&platform:platforms)
 {
@@ -174,18 +279,43 @@ for(auto&coin:coins)
 {
 window.draw(coin);
 }
+for(auto&enemy:enemies)
+{
+enemySprite.setPosition(enemy.getPosition());
+enemySprite.setScale({0.12f,0.12f});
+window.draw(enemySprite);
+}
+
 if(facingRight)
 {
-playerSprite.setScale({0.15f,0.15f});
+playerSprite.setScale({spriteScale,spriteScale});
 playerSprite.setPosition({player.getPosition().x+15.f,player.getPosition().y-45.f});
 }
 else
 {
-playerSprite.setScale({-0.15f,0.15f});
-playerSprite.setPosition({player.getPosition().x+player.getSize().x,player.getPosition().y});
+playerSprite.setScale({spriteScale,spriteScale});
+playerSprite.setPosition({player.getPosition().x+player.getSize().x,player.getPosition().y-45.f});
 }
 window.draw(playerSprite);
+
+if(isAttacking)
+{
+swordSprite.setPosition(sword.getPosition());
+
+if(facingRight)
+{
+swordSprite.setScale({0.12f,0.12f});
+}
+else
+{
+swordSprite.setScale({-0.12f,0.12f});
+}
+
+window.draw(swordSprite);
+}
+
 window.draw(scoreText);
+window.draw(lifeText);
 window.display();
 
 }
