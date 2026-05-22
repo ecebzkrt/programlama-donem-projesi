@@ -104,6 +104,12 @@ if(!swordTexture.loadFromFile("sword.png"))
 return -1;
 }
 sf::Sprite swordSprite(swordTexture);
+sf::Texture heartTexture;
+if(!heartTexture.loadFromFile("heart.png"))
+{
+return -1;
+}
+sf::Sprite heartSprite(heartTexture);
 swordSprite.setOrigin({swordTexture.getSize().x/2.f,swordTexture.getSize().y/2.f});
   //score ayari
   int score=0;
@@ -264,11 +270,10 @@ player.setPosition({100.f,50.f});
 it++;
 }
 }
-
 scoreText.setString("score: "+std::to_string(score));
-lifeText.setString("can: "+std::to_string(life));
 scoreText.setPosition({cameraX-390.f,10.f});
-lifeText.setPosition({cameraX-390.f,40.f});
+
+scoreText.setPosition({cameraX-390.f,10.f});
 
 window.clear();
 for(auto&platform:platforms)
@@ -315,7 +320,16 @@ window.draw(swordSprite);
 }
 
 window.draw(scoreText);
-window.draw(lifeText);
+for(int i=0;i<life;i++)
+{
+heartSprite.setScale({0.06f,0.06f});
+heartSprite.setPosition({cameraX-390.f+(i*50.f),50.f});
+window.draw(heartSprite);
+}
+
+
+
+
 window.display();
 
 }
