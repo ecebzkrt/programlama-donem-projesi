@@ -41,8 +41,9 @@ enemies.push_back(enemy3);
 
 }
 
-int main()
-{ sf::RenderWindow window(sf::VideoMode({800,600}),"platform oyunu");
+int main(){
+  int level=1;
+   sf::RenderWindow window(sf::VideoMode({800,600}),"platform oyunu");
 window.setFramerateLimit(60);
 float speed=5.f;
 float velocityY=0.f;
@@ -165,6 +166,11 @@ swordSprite.setOrigin({swordTexture.getSize().x/2.f,swordTexture.getSize().y/2.f
   scoreText.setCharacterSize(24);
   scoreText.setFillColor(sf::Color::White);
   scoreText.setPosition({10.f,10.f});
+  //level
+  sf::Text levelText(font);
+  levelText.setCharacterSize(24);
+  levelText.setFillColor(sf::Color::White);
+  levelText.setPosition({20.f,90.f});
 
 sf::Text lifeText(font);
 lifeText.setCharacterSize(24);
@@ -252,6 +258,35 @@ player.setPosition({0.f,player.getPosition().y});
 if(player.getPosition().x+player.getSize().x>3000)
 {
  player.setPosition({3000.f-player.getSize().x,player.getPosition().y});
+}
+//levelin bitis kismini ayarlama
+if(player.getPosition().x>2900.f)
+{ level++;
+  player.setPosition({100.f,50.f});
+  platforms.clear();
+  enemies.clear();
+  coins.clear();
+  platforms.push_back(ground);
+  if(level==2){
+    sf::RectangleShape newPlatform1({250.f,30.f});
+    newPlatform1.setFillColor(sf::Color::Green);
+    newPlatform1.setPosition({400.f,450.f});
+    platforms.push_back(newPlatform1);
+
+    sf::RectangleShape newPlatform2({200.f,30.f});
+    newPlatform2.setFillColor(sf::Color::Yellow);
+    newPlatform2.setPosition({900.f,350.f});
+    platforms.push_back(newPlatform2);
+
+    sf::RectangleShape newEnemy({50.f,50.f});
+     newEnemy.setPosition({1000.f,500.f});
+     enemies.push_back(newEnemy);
+
+     sf::CircleShape newCoin(15.f);
+     newCoin.setFillColor({sf::Color::Yellow});
+     newCoin.setPosition({950.f,300.f});
+     coins.push_back(newCoin);
+  }
 }
 
 isOnGround=false;
@@ -349,6 +384,8 @@ enemySprite.setPosition(enemy.getPosition());
 enemySprite.setScale({0.12f,0.12f});
 window.draw(enemySprite);
 }
+//level ana dongu ici
+levelText.setString("Level: "+std::to_string(level));
 
 if(facingRight)
 {
@@ -374,10 +411,8 @@ else
 {
 swordSprite.setScale({-0.12f,0.12f});
 }
-
 window.draw(swordSprite);
 }
-
 window.draw(scoreText);
 for(int i=0;i<life;i++)
 {
@@ -385,15 +420,8 @@ heartSprite.setScale({0.06f,0.06f});
 heartSprite.setPosition({cameraX-390.f+(i*50.f),50.f});
 window.draw(heartSprite);
 }
-
-
-
-
+window.draw(levelText);
 window.display();
-
 }
-
-
-
 return 0;
 }
