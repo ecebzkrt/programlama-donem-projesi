@@ -129,6 +129,11 @@ sf::RectangleShape enemy3({50.f,50.f});
 enemy3.setFillColor(sf::Color::White);
 enemy3.setPosition({1700.f,500.f});
 resetGameElements(coins,enemies);
+//dusmanlara hareket ekliyorumm
+std::vector<float>enemyMovement;
+enemyMovement.push_back(2.f);
+enemyMovement.push_back(2.f);
+enemyMovement.push_back(2.f);
 
 sf::Texture enemyTexture;
 if(!enemyTexture.loadFromFile("enemy.png"))
@@ -272,6 +277,19 @@ if(player.getGlobalBounds().findIntersection(it->getGlobalBounds()))
 else{
 
   ++it;
+}
+}
+//dusman hareket 
+for(int i=0;i<enemies.size();i++)
+{
+enemies[i].move({enemyMovement[i],0.f});
+if(enemies[i].getPosition().x<600.f)
+{
+ enemyMovement[i]=2.f;
+}
+if(enemies[i].getPosition().x>900.f)
+{
+ enemyMovement[i]=-2.f;
 }
 }
 //dusman kontrolu
