@@ -84,12 +84,9 @@ platform5.setPosition({1500.f,400.f});
 platforms.push_back(platform5);
 
 //bolum sonu bayragi
-sf::RectangleShape finishPole({10.f,120.f});
-finishPole.setFillColor(sf::Color{180,180,180});
-finishPole.setPosition({2850.f,450.f});
- sf::RectangleShape finishFlag({60.f,40.f});
- finishFlag.setFillColor({sf::Color::Green});
- finishFlag.setPosition({2870.f,450.f});
+sf::RectangleShape finishBox({80.f,160.f});
+finishBox.setFillColor(sf::Color::Transparent);
+finishBox.setPosition({2850.f,390.f});
 
 //oyuncu
   sf::RectangleShape player({50.f,70.f});
@@ -170,20 +167,28 @@ swordSprite.setOrigin({swordTexture.getSize().x/2.f,swordTexture.getSize().y/2.f
 {
     return -1;
 }
+//score texture
   sf::Text scoreText(font);
   scoreText.setCharacterSize(24);
   scoreText.setFillColor(sf::Color::White);
   scoreText.setPosition({10.f,10.f});
-  //level
+  //level texture
   sf::Text levelText(font);
   levelText.setCharacterSize(24);
   levelText.setFillColor(sf::Color::White);
   levelText.setPosition({20.f,90.f});
-
+//kalp texture kismi
 sf::Text lifeText(font);
 lifeText.setCharacterSize(24);
 lifeText.setFillColor(sf::Color::White);
 lifeText.setPosition({10.f,40.f});
+//bayrak texture kismi
+sf::Texture flagTexture;
+ if(!flagTexture.loadFromFile("flag.png"))
+ {
+ return -1;
+ }
+ sf::Sprite flagSprite(flagTexture);
 
 //can hakki
 int life=3;
@@ -268,7 +273,7 @@ if(player.getPosition().x+player.getSize().x>3000)
  player.setPosition({3000.f-player.getSize().x,player.getPosition().y});
 }
 //levelin bitis kismini ayarlama
-if(player.getGlobalBounds().findIntersection(finishFlag.getGlobalBounds()))
+if(player.getGlobalBounds().findIntersection(finishBox.getGlobalBounds()))
 { level++;
   player.setPosition({100.f,50.f});
   platforms.clear();
@@ -386,8 +391,10 @@ for(auto&coin:coins)
 {
 window.draw(coin);
 }
-window.draw(finishPole);
-window.draw(finishFlag);
+
+flagSprite.setPosition({2780.f,330.f});
+flagSprite.setScale({0.18f,0.18f});
+window.draw(flagSprite);
 
 for(auto&enemy:enemies)
 {
