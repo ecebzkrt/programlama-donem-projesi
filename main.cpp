@@ -165,9 +165,9 @@ swordSprite.setOrigin({swordTexture.getSize().x/2.f,swordTexture.getSize().y/2.f
   //score ayari
   int score=0;
   sf::Font font;
-  if(!font.openFromFile("/System/Library/Fonts/Supplemental/Arial.ttf"))
+  if(!font.openFromFile("arial.ttf"))
 {
-    return -1;
+    return -1; 
 }
 //zemin texture
 sf::Texture groundTexture;
@@ -187,19 +187,19 @@ platformTexture.setRepeated(true);
 sf::Sprite platformSprite(platformTexture);
 //score texture
   sf::Text scoreText(font);
-  scoreText.setCharacterSize(24);
+  scoreText.setCharacterSize(18);
   scoreText.setFillColor(sf::Color::White);
   scoreText.setPosition({10.f,10.f});
   //level texture
   sf::Text levelText(font);
-  levelText.setCharacterSize(24);
+  levelText.setCharacterSize(18);
   levelText.setFillColor(sf::Color::White);
   levelText.setPosition({20.f,90.f});
 //kalp texture kismi
 sf::Text lifeText(font);
-lifeText.setCharacterSize(24);
+lifeText.setCharacterSize(22);
 lifeText.setFillColor(sf::Color::White);
-lifeText.setPosition({10.f,40.f});
+lifeText.setPosition({10.f,18.f});
 //bayrak texture kismi
 sf::Texture flagTexture;
  if(!flagTexture.loadFromFile("flag.png"))
@@ -397,8 +397,6 @@ it++;
 scoreText.setString("score: "+std::to_string(score));
 scoreText.setPosition({cameraX-390.f,10.f});
 
-scoreText.setPosition({cameraX-390.f,10.f});
-
 window.clear();
 //platform cizim kismi
 for(auto&platform:platforms)
@@ -436,6 +434,7 @@ window.draw(enemySprite);
 }
 //level string
 levelText.setString("Level: "+std::to_string(level));
+levelText.setPosition({cameraX-390.f,95.f});
 //oyuncu cizim
 if(facingRight)
 {
@@ -470,7 +469,7 @@ window.draw(scoreText);
 for(int i=0;i<life;i++)
 {
 heartSprite.setScale({0.06f,0.06f});
-heartSprite.setPosition({cameraX-390.f+(i*50.f),50.f});
+heartSprite.setPosition({cameraX-410.f+(i*45.f),30.f});
 window.draw(heartSprite);
 }
 window.draw(levelText);
