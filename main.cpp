@@ -83,6 +83,14 @@ platform5.setFillColor(sf::Color::Red);
 platform5.setPosition({1500.f,400.f});
 platforms.push_back(platform5);
 
+//bolum sonu bayragi
+sf::RectangleShape finishPole({10.f,120.f});
+finishPole.setFillColor(sf::Color{180,180,180});
+finishPole.setPosition({2850.f,450.f});
+ sf::RectangleShape finishFlag({60.f,40.f});
+ finishFlag.setFillColor({sf::Color::Green});
+ finishFlag.setPosition({2870.f,450.f});
+
 //oyuncu
   sf::RectangleShape player({50.f,70.f});
   player.setFillColor(sf::Color::Transparent);
@@ -260,7 +268,7 @@ if(player.getPosition().x+player.getSize().x>3000)
  player.setPosition({3000.f-player.getSize().x,player.getPosition().y});
 }
 //levelin bitis kismini ayarlama
-if(player.getPosition().x>2900.f)
+if(player.getGlobalBounds().findIntersection(finishFlag.getGlobalBounds()))
 { level++;
   player.setPosition({100.f,50.f});
   platforms.clear();
@@ -378,13 +386,16 @@ for(auto&coin:coins)
 {
 window.draw(coin);
 }
+window.draw(finishPole);
+window.draw(finishFlag);
+
 for(auto&enemy:enemies)
 {
 enemySprite.setPosition(enemy.getPosition());
 enemySprite.setScale({0.12f,0.12f});
 window.draw(enemySprite);
 }
-//level ana dongu ici
+//level devam
 levelText.setString("Level: "+std::to_string(level));
 
 if(facingRight)
