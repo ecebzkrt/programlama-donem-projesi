@@ -11,22 +11,22 @@ enemies.clear();
 //coinleri ilk konumlariyla yeniden dolduruyorum
 sf::CircleShape coin1(15.f);
 coin1.setFillColor(sf::Color::Yellow);
-coin1.setPosition({560.f,390.f});
+coin1.setPosition({560.f,470.f});
 coins.push_back(coin1);
 sf::CircleShape coin2(15.f);
   coin2.setFillColor(sf::Color::Yellow);
-  coin2.setPosition({300.f,360.f});
+  coin2.setPosition({300.f,370.f});
   coins.push_back(coin2);
 
   sf::CircleShape coin3(15.f);
   coin3.setFillColor(sf::Color::Yellow);
-  coin3.setPosition({120.f,510.f});
+  coin3.setPosition({120.f,460.f});
   coins.push_back(coin3);
 
   //dusmanlari ilk konumlariyla yeniden dolduruyorum
   sf::RectangleShape enemy1({50.f,50.f});
 enemy1.setFillColor(sf::Color::White);
-enemy1.setPosition({700.f,500.f});
+enemy1.setPosition({700.f,450.f});
 enemies.push_back(enemy1);
 
 sf::RectangleShape enemy2({50.f,50.f});
@@ -36,7 +36,7 @@ enemies.push_back(enemy2);
 
 sf::RectangleShape enemy3({50.f,50.f});
 enemy3.setFillColor(sf::Color::White);
-enemy3.setPosition({1700.f,500.f});
+enemy3.setPosition({1700.f,350.f});
 enemies.push_back(enemy3);
 
 }
@@ -51,34 +51,34 @@ float gravity=0.5f;
 float jumpPower=-12.f;
 bool isOnGround=false;
 //oyun zemini
-sf::RectangleShape ground({3000.f,50.f});
+sf::RectangleShape ground({3000.f,140.f});
 ground.setFillColor(sf::Color::Blue);
-ground.setPosition({0.f,550.f});
+ground.setPosition({0.f,500.f});
 std::vector<sf::RectangleShape>platforms;
 platforms.push_back(ground);
 
 //platformlar
-sf::RectangleShape platform1({200.f,30.f});
+sf::RectangleShape platform1({200.f,50.f});
 platform1.setFillColor(sf::Color::Red);
 platform1.setPosition({250.f,400.f});
 platforms.push_back(platform1);
 
-sf::RectangleShape platform2({200.f,30.f});
+sf::RectangleShape platform2({200.f,50.f});
 platform2.setFillColor(sf::Color::Magenta);
 platform2.setPosition({500.f,430.f});
 platforms.push_back(platform2);
 
-sf::RectangleShape platform3({200.f,30.f});
+sf::RectangleShape platform3({200.f,50.f});
 platform3.setFillColor(sf::Color::Cyan);
 platform3.setPosition({900.f,450.f});
 platforms.push_back(platform3);
 
-sf::RectangleShape platform4({150.f,30.f});
+sf::RectangleShape platform4({150.f,50.f});
 platform4.setFillColor(sf::Color::White);
 platform4.setPosition({1250.f,350.f});
 platforms.push_back(platform4);
 
-sf::RectangleShape platform5({250.f,30.f});
+sf::RectangleShape platform5({250.f,50.f});
 platform5.setFillColor(sf::Color::Red);
 platform5.setPosition({1500.f,400.f});
 platforms.push_back(platform5);
@@ -97,6 +97,8 @@ finishBox.setPosition({2850.f,390.f});
     return -1;
   }
   sf::Sprite playerSprite(playerTexture);
+  //oyuncunun ayagini yere bastirma
+playerSprite.setOrigin({playerTexture.getSize().x/2.f,(float)playerTexture.getSize().y-80.f});
   bool facingRight=true;
   
   //kamera olusturma
@@ -106,24 +108,24 @@ finishBox.setPosition({2850.f,390.f});
   std::vector<sf::CircleShape>coins;
   sf::CircleShape coin1(15.f);
   coin1.setFillColor(sf::Color::Yellow);
-  coin1.setPosition({560.f,390.f});
+  coin1.setPosition({560.f,470.f});
   
 
   sf::CircleShape coin2(15.f);
   coin2.setFillColor(sf::Color::Yellow);
-  coin2.setPosition({300.f,360.f});
+  coin2.setPosition({300.f,370.f});
   
 
   sf::CircleShape coin3(15.f);
   coin3.setFillColor(sf::Color::Yellow);
-  coin3.setPosition({120.f,510.f});
+  coin3.setPosition({120.f,460.f});
 
 
 //dusmanlar
 std::vector<sf::RectangleShape> enemies;
 sf::RectangleShape enemy1({50.f,50.f});
 enemy1.setFillColor(sf::Color::White);
-enemy1.setPosition({700.f,500.f});
+enemy1.setPosition({700.f,450.f});
 
 
 sf::RectangleShape enemy2({50.f,50.f});
@@ -133,7 +135,7 @@ enemy2.setPosition({1350.f,300.f});
 
 sf::RectangleShape enemy3({50.f,50.f});
 enemy3.setFillColor(sf::Color::White);
-enemy3.setPosition({1700.f,500.f});
+enemy3.setPosition({1700.f,350.f});
 resetGameElements(coins,enemies);
 //dusmanlara hareket ekliyorumm
 std::vector<float>enemyMovement;
@@ -167,6 +169,22 @@ swordSprite.setOrigin({swordTexture.getSize().x/2.f,swordTexture.getSize().y/2.f
 {
     return -1;
 }
+//zemin texture
+sf::Texture groundTexture;
+if(!groundTexture.loadFromFile("groundCover.png"))
+{
+  return -1;
+}
+groundTexture.setRepeated(true);
+sf::Sprite groundSprite(groundTexture);
+//platform texture
+sf::Texture platformTexture;
+if(!platformTexture.loadFromFile("platformCover.png"))
+{
+return -1;
+}
+platformTexture.setRepeated(true);
+sf::Sprite platformSprite(platformTexture);
 //score texture
   sf::Text scoreText(font);
   scoreText.setCharacterSize(24);
@@ -222,7 +240,6 @@ if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
  facingRight=true;
  isMoving=true;
 }
-
 //saldiri kontrolu
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
 { isAttacking=true;
@@ -292,7 +309,7 @@ if(player.getGlobalBounds().findIntersection(finishBox.getGlobalBounds()))
     platforms.push_back(newPlatform2);
 
     sf::RectangleShape newEnemy({50.f,50.f});
-     newEnemy.setPosition({1000.f,500.f});
+     newEnemy.setPosition({1000.f,450.f});
      enemies.push_back(newEnemy);
 
      sf::CircleShape newCoin(15.f);
@@ -383,10 +400,25 @@ scoreText.setPosition({cameraX-390.f,10.f});
 scoreText.setPosition({cameraX-390.f,10.f});
 
 window.clear();
+//platform cizim kismi
 for(auto&platform:platforms)
-{
- window.draw(platform);
+{ 
+  
+  if(platform.getSize().x>1000.f)
+  {groundSprite.setPosition(platform.getPosition());
+    groundSprite.setScale({platform.getSize().x / groundTexture.getSize().x, 
+   platform.getSize().y / groundTexture.getSize().y});
+      window.draw(groundSprite);
 }
+else
+{
+platformSprite.setPosition(platform.getPosition());
+platformSprite.setScale({platform.getSize().x / platformTexture.getSize().x, 
+  platform.getSize().y / platformTexture.getSize().y});
+window.draw(platformSprite);
+}
+   }
+//coin cizim
 for(auto&coin:coins)
 {
 window.draw(coin);
@@ -395,26 +427,29 @@ window.draw(coin);
 flagSprite.setPosition({2780.f,330.f});
 flagSprite.setScale({0.18f,0.18f});
 window.draw(flagSprite);
-
+//enemy cizim
 for(auto&enemy:enemies)
 {
 enemySprite.setPosition(enemy.getPosition());
 enemySprite.setScale({0.12f,0.12f});
 window.draw(enemySprite);
 }
-//level devam
+//level string
 levelText.setString("Level: "+std::to_string(level));
-
+//oyuncu cizim
 if(facingRight)
 {
 playerSprite.setScale({spriteScale,spriteScale});
-playerSprite.setPosition({player.getPosition().x+15.f,player.getPosition().y-45.f});
+
 }
 else
 {
 playerSprite.setScale({-spriteScale,spriteScale});
-playerSprite.setPosition({player.getPosition().x+player.getSize().x+10.f,player.getPosition().y-45.f});
 }
+playerSprite.setPosition({
+    player.getPosition().x + player.getSize().x / 2.f, 
+    player.getPosition().y + player.getSize().y+25.f
+});
 window.draw(playerSprite);
 
 if(isAttacking)
