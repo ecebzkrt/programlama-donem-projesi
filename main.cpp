@@ -289,7 +289,7 @@ if(player.getPosition().x+player.getSize().x>3000)
 {
  player.setPosition({3000.f-player.getSize().x,player.getPosition().y});
 }
-//levelin bitis kismini ayarlama
+//level atlama kismi
 if(player.getGlobalBounds().findIntersection(finishBox.getGlobalBounds()))
 { level++;
   player.setPosition({100.f,50.f});
@@ -299,23 +299,52 @@ if(player.getGlobalBounds().findIntersection(finishBox.getGlobalBounds()))
   platforms.push_back(ground);
   if(level==2){
     sf::RectangleShape newPlatform1({250.f,30.f});
-    newPlatform1.setFillColor(sf::Color::Green);
     newPlatform1.setPosition({400.f,450.f});
     platforms.push_back(newPlatform1);
 
     sf::RectangleShape newPlatform2({200.f,30.f});
-    newPlatform2.setFillColor(sf::Color::Yellow);
-    newPlatform2.setPosition({900.f,350.f});
+    newPlatform2.setPosition({800.f,350.f});
     platforms.push_back(newPlatform2);
+    
+    sf::RectangleShape newPLatform3({150.f,30.f});
+    newPLatform3.setPosition({1200.f,250.f});
+    platforms.push_back(newPLatform3);
 
-    sf::RectangleShape newEnemy({50.f,50.f});
-     newEnemy.setPosition({1000.f,450.f});
-     enemies.push_back(newEnemy);
+    sf::RectangleShape newPLatform4({150.f,30.f});
+    newPLatform4.setPosition({1400.f,450.f});
+    platforms.push_back(newPLatform4);
 
-     sf::CircleShape newCoin(15.f);
-     newCoin.setFillColor({sf::Color::Yellow});
-     newCoin.setPosition({950.f,300.f});
-     coins.push_back(newCoin);
+    // level 2'de oyunun zorlasmasi icin dusman sayisini arttiriyorum.
+
+    sf::RectangleShape newEnemy1({50.f,50.f});
+     newEnemy1.setPosition({600.f,450.f});
+     enemies.push_back(newEnemy1); 
+     enemyMovement.push_back(3.5f);  //hizlarini bilerek farkli ayarliyorum ki oldurmek zorlassin
+
+      sf::RectangleShape newEnemy2({50.f,50.f});
+     newEnemy2.setPosition({1100.f,300.f});
+     enemies.push_back(newEnemy2);
+     enemyMovement.push_back(1.5f);
+    
+      sf::RectangleShape newEnemy3({50.f,50.f});
+     newEnemy3.setPosition({1400.f,350.f});
+     enemies.push_back(newEnemy3);
+     enemyMovement.push_back(2.5f);
+
+      sf::RectangleShape newEnemy4({50.f,50.f});
+     newEnemy4.setPosition({1600.f,450.f});
+     enemies.push_back(newEnemy4);
+     enemyMovement.push_back(3.5f);
+
+     sf::CircleShape newCoin1(15.f);
+     newCoin1.setFillColor({sf::Color::Yellow});
+     newCoin1.setPosition({850.f,300.f});
+     coins.push_back(newCoin1);
+
+     sf::CircleShape newCoin2(15.f);
+     newCoin2.setFillColor(sf::Color::Yellow);
+     newCoin2.setPosition({1350.f,350.f});
+     coins.push_back(newCoin2);
   }
 }
 
@@ -348,13 +377,10 @@ else{
 for(int i=0;i<enemies.size();i++)
 {
 enemies[i].move({enemyMovement[i],0.f});
-if(enemies[i].getPosition().x<600.f)
+//dusman platformun sonuna gelince geri donsun diye
+if(enemies[i].getPosition().x<=0.f||enemies[i].getPosition().x>=2900)
 {
- enemyMovement[i]=2.f;
-}
-if(enemies[i].getPosition().x>900.f)
-{
- enemyMovement[i]=-2.f;
+enemyMovement[i]*=-1.f;
 }
 }
 //dusman kontrolu
@@ -362,7 +388,7 @@ sf::RectangleShape sword({20.f,40.f});
 sword.setFillColor(sf::Color::White);
 if(facingRight)
 {
-sword.setPosition({player.getPosition().x+100.f,player.getPosition().y+35.f});
+sword.setPosition({player.getPosition().x+70.f,player.getPosition().y+35.f});
 }
 else
 {
@@ -379,6 +405,7 @@ else {
   if(player.getGlobalBounds().findIntersection(it->getGlobalBounds())&&damageClock.getElapsedTime().asSeconds()>1.f)
 {
 life--;
+score=0;
 damageClock.restart();
 player.setPosition({100.f,50.f});
 velocityY=0.f;
