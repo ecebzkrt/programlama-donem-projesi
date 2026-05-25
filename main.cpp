@@ -169,6 +169,16 @@ swordSprite.setOrigin({swordTexture.getSize().x/2.f,swordTexture.getSize().y/2.f
 {
     return -1; 
 }
+//background texture 
+sf::Texture backgroundTexture;
+if(!backgroundTexture.loadFromFile("background.png"))
+{
+ return -1;
+}
+backgroundTexture.setRepeated(true);
+sf::Sprite backgroundSprite(backgroundTexture);
+backgroundSprite.setTextureRect(sf::IntRect({0,0},{6000,1000}));
+backgroundSprite.setScale({0.4f,0.7f});
 //zemin texture
 sf::Texture groundTexture;
 if(!groundTexture.loadFromFile("groundCover.png"))
@@ -425,6 +435,9 @@ scoreText.setString("score: "+std::to_string(score));
 scoreText.setPosition({cameraX-390.f,10.f});
 
 window.clear();
+//background cizim
+backgroundSprite.setPosition({cameraX/2.0f-400.f,-100.f});
+window.draw(backgroundSprite);
 //platform cizim kismi
 for(auto&platform:platforms)
 { 
