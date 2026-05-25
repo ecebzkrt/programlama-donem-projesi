@@ -98,6 +98,7 @@ finishBox.setPosition({2850.f,390.f});
   }
   sf::Sprite playerSprite(playerTexture);
   //oyuncunun ayagini yere bastirma
+
 playerSprite.setOrigin({playerTexture.getSize().x/2.f,(float)playerTexture.getSize().y-80.f});
   bool facingRight=true;
   
@@ -261,9 +262,9 @@ if(isAttacking&&attackClock.getElapsedTime().asSeconds()>0.2f)
 }
 
   float spriteScale=0.15f;
-  if(isMoving)
+  if(isMoving&&isOnGround)
   {
-spriteScale=0.15f+std::sin(animationTime*10.f)*0.01f;
+    spriteScale=0.15f+std::sin(animationTime*10.f)*0.01f;
 }
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)&&isOnGround)
 {
@@ -317,7 +318,7 @@ if(player.getGlobalBounds().findIntersection(finishBox.getGlobalBounds()))
     platforms.push_back(newPlatform2);
     
     sf::RectangleShape newPLatform3({150.f,30.f});
-    newPLatform3.setPosition({1200.f,250.f});
+    newPLatform3.setPosition({1200.f,400.f});
     platforms.push_back(newPLatform3);
 
     sf::RectangleShape newPLatform4({150.f,30.f});
@@ -357,19 +358,27 @@ if(player.getGlobalBounds().findIntersection(finishBox.getGlobalBounds()))
      coins.push_back(newCoin2);
   }
 }
-
+//oyuncu collision kismi
 isOnGround=false;
-for(auto& plaform:platforms)
+for(auto& platform:platforms)
 {
-if(player.getGlobalBounds().findIntersection(plaform.getGlobalBounds())&&velocityY>0)
+if(player.getGlobalBounds().findIntersection(platform.getGlobalBounds())&&velocityY>0)
 {
-player.setPosition({
+  float groundFix=0.f; //oyuncuyu platformlara manuel olarak oturttum ama oyuncu zeminde havada kaliyordu.
+  
+   if(platform.getSize().x>1000.f)
+   {
+   groundFix=20.f;
+   }
+   player.setPosition({
 
-player.getPosition().x,plaform.getPosition().y-player.getSize().y});
-velocityY=0.f;
-isOnGround=true;
+   player.getPosition().x,platform.getPosition().y-player.getSize().y+groundFix});
+   velocityY=0.f;
+   isOnGround=true;
+  }
+
 }
-}
+
 //coin kontrolu
 for(auto it=coins.begin();it!=coins.end();)
 {
@@ -436,7 +445,7 @@ scoreText.setPosition({cameraX-390.f,10.f});
 
 window.clear();
 //background cizim
-backgroundSprite.setPosition({cameraX/2.0f-400.f,-100.f});
+backgroundSprite.setPosition({cameraX/2.0f-400.f,-100.f});//arka planı kamera hareketinin yari hizinda kaydiriyoruz.
 window.draw(backgroundSprite);
 //platform cizim kismi
 for(auto&platform:platforms)
@@ -485,15 +494,15 @@ else
 {
 playerSprite.setScale({-spriteScale,spriteScale});
 }
+ 
 playerSprite.setPosition({
-    player.getPosition().x + player.getSize().x / 2.f, 
-    player.getPosition().y + player.getSize().y+25.f
-});
+    player.getPosition().x+ player.getSize().x / 2.f, 
+    player.getPosition().y + player.getSize().y+20.f});
 window.draw(playerSprite);
 
 if(isAttacking)
 {
-swordSprite.setPosition(sword.getPosition());
+swordSprite.setPosition({sword.getPosition().x,sword.getPosition().y});
 
 if(facingRight)
 {
