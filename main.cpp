@@ -218,6 +218,19 @@ sf::Texture flagTexture;
  return -1;
  }
  sf::Sprite flagSprite(flagTexture);
+//oyun baslangic menusu
+bool gameStart=false;
+sf::Text titleText(font);
+titleText.setCharacterSize(45);
+titleText.setFillColor(sf::Color::White);
+titleText.setString("VALKYRIE"); 
+titleText.setPosition({210.f,180.f});
+ 
+sf::Text startText(font);
+startText.setCharacterSize(24);
+startText.setFillColor(sf::Color::Red);
+startText.setString("press ENTER to start warrior");
+startText.setPosition({110.f,280.f});
 
 //can hakki
 int life=3;
@@ -236,6 +249,18 @@ while(window.isOpen())
   {
    window.close();
   }
+ }
+ if(!gameStart)
+ { if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter))
+  {
+    gameStart=true;
+ }
+  window.clear();
+  window.setView(window.getDefaultView());
+  window.draw(titleText);
+  window.draw(startText);
+  window.display();
+  continue;
  }
 //sol hareket icin
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
