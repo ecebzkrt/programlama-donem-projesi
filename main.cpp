@@ -225,12 +225,13 @@ titleText.setCharacterSize(45);
 titleText.setFillColor(sf::Color::White);
 titleText.setString("VALKYRIE"); 
 titleText.setPosition({210.f,180.f});
- 
+ //oyun bitis
+ bool gameWon=false;
 sf::Text startText(font);
 startText.setCharacterSize(24);
 startText.setFillColor(sf::Color::Red);
 startText.setString("press ENTER to start warrior");
-startText.setPosition({110.f,280.f});
+startText.setPosition({80.f,280.f});
 
 //can hakki
 int life=3;
@@ -327,60 +328,130 @@ if(player.getPosition().x+player.getSize().x>3000)
 }
 //level atlama kismi
 if(player.getGlobalBounds().findIntersection(finishBox.getGlobalBounds()))
-{ level++;
+{ 
+  level++;
   player.setPosition({100.f,50.f});
   platforms.clear();
   enemies.clear();
   coins.clear();
   platforms.push_back(ground);
   if(level==2){
-    sf::RectangleShape newPlatform1({250.f,30.f});
-    newPlatform1.setPosition({400.f,450.f});
-    platforms.push_back(newPlatform1);
+    sf::RectangleShape l2Platform1({250.f,30.f});
+    l2Platform1.setPosition({400.f,450.f});
+    platforms.push_back(l2Platform1);
 
-    sf::RectangleShape newPlatform2({200.f,30.f});
-    newPlatform2.setPosition({800.f,350.f});
-    platforms.push_back(newPlatform2);
+    sf::RectangleShape l2Platform2({200.f,30.f});
+    l2Platform2.setPosition({800.f,350.f});
+    platforms.push_back(l2Platform2);
     
-    sf::RectangleShape newPLatform3({150.f,30.f});
-    newPLatform3.setPosition({1200.f,400.f});
-    platforms.push_back(newPLatform3);
+    sf::RectangleShape l2PLatform3({150.f,30.f});
+    l2PLatform3.setPosition({1200.f,400.f});
+    platforms.push_back(l2PLatform3);
 
-    sf::RectangleShape newPLatform4({150.f,30.f});
-    newPLatform4.setPosition({1400.f,450.f});
-    platforms.push_back(newPLatform4);
+    sf::RectangleShape l2PLatform4({150.f,30.f});
+    l2PLatform4.setPosition({1400.f,450.f});
+    platforms.push_back(l2PLatform4);
 
     // level 2'de oyunun zorlasmasi icin dusman sayisini arttiriyorum.
 
-    sf::RectangleShape newEnemy1({50.f,50.f});
-     newEnemy1.setPosition({600.f,450.f});
-     enemies.push_back(newEnemy1); 
+    sf::RectangleShape l2Enemy1({50.f,50.f});
+     l2Enemy1.setPosition({600.f,450.f});
+     enemies.push_back(l2Enemy1); 
      enemyMovement.push_back(3.5f);  //hizlarini bilerek farkli ayarliyorum ki oldurmek zorlassin
 
-      sf::RectangleShape newEnemy2({50.f,50.f});
-     newEnemy2.setPosition({1100.f,300.f});
-     enemies.push_back(newEnemy2);
+      sf::RectangleShape l2Enemy2({50.f,50.f});
+     l2Enemy2.setPosition({1100.f,300.f});
+     enemies.push_back(l2Enemy2);
      enemyMovement.push_back(1.5f);
     
-      sf::RectangleShape newEnemy3({50.f,50.f});
-     newEnemy3.setPosition({1400.f,350.f});
-     enemies.push_back(newEnemy3);
+      sf::RectangleShape l2Enemy3({50.f,50.f});
+     l2Enemy3.setPosition({1400.f,350.f});
+     enemies.push_back(l2Enemy3);
      enemyMovement.push_back(2.5f);
 
-      sf::RectangleShape newEnemy4({50.f,50.f});
-     newEnemy4.setPosition({1600.f,450.f});
-     enemies.push_back(newEnemy4);
+      sf::RectangleShape l2Enemy4({50.f,50.f});
+     l2Enemy4.setPosition({1600.f,450.f});
+     enemies.push_back(l2Enemy4);
      enemyMovement.push_back(3.5f);
 
-     sf::CircleShape newCoin1(15.f);
-     newCoin1.setFillColor({sf::Color::Yellow});
-     newCoin1.setPosition({850.f,300.f});
-     coins.push_back(newCoin1);
+     sf::CircleShape l2Coin1(15.f);
+     l2Coin1.setFillColor({sf::Color::Yellow});
+     l2Coin1.setPosition({850.f,300.f});
+     coins.push_back(l2Coin1);
 
-     sf::CircleShape newCoin2(15.f);
-     newCoin2.setFillColor(sf::Color::Yellow);
-     newCoin2.setPosition({1350.f,350.f});
-     coins.push_back(newCoin2);
+     sf::CircleShape l2Coin2(15.f);
+     l2Coin2.setFillColor(sf::Color::Yellow);
+     l2Coin2.setPosition({1350.f,350.f});
+     coins.push_back(l2Coin2);
+  }
+  else if(level==3)
+  { //level 3 icin platformlar ekliyorum
+   
+    sf::RectangleShape l3platform1({150.f,30.f});
+   l3platform1.setPosition({350.f,400.f});
+    platforms.push_back(l3platform1);
+
+sf::RectangleShape l3platform2({200.f,50.f});
+   l3platform2.setPosition({650.f,350.f});
+    platforms.push_back(l3platform2);
+
+    sf::RectangleShape l3platform3({170.f,80.f});
+   l3platform3.setPosition({800.f,380.f});
+    platforms.push_back(l3platform3);
+
+sf::RectangleShape l3platform4({230.f,60.f});
+   l3platform4.setPosition({1300.f,430.f});
+    platforms.push_back(l3platform4);
+
+sf::RectangleShape l3platform5({150.f,30.f});
+   l3platform5.setPosition({1750.f,400.f});
+    platforms.push_back(l3platform5);
+
+//dusman ekliyorum
+
+sf::RectangleShape l3enemy1({50.f,50.f});
+l3enemy1.setPosition({350.f,380.f});
+enemies.push_back(l3enemy1);
+enemyMovement.push_back(4.5f);
+
+sf::RectangleShape l3enemy2({50.f,50.f});
+l3enemy2.setPosition({650.f,330.f});
+enemies.push_back(l3enemy2);
+enemyMovement.push_back(4.f);
+
+sf::RectangleShape l3enemy3({50.f,50.f});
+l3enemy3.setPosition({790.f,360.f});
+enemies.push_back(l3enemy3);
+enemyMovement.push_back(3.5f);
+
+sf::RectangleShape l3enemy4({50.f,50.f});
+l3enemy4.setPosition({1310.f,430.f});
+enemies.push_back(l3enemy4);
+enemyMovement.push_back(5.f);
+
+sf::RectangleShape l3enemy5({50.f,50.f});
+l3enemy5.setPosition({1770.f,280.f});
+enemies.push_back(l3enemy5);
+enemyMovement.push_back(3.5f);
+//coin ekliyorum
+sf::CircleShape l3coin1(15.f);
+l3coin1.setFillColor(sf::Color::Yellow);
+l3coin1.setPosition({340.f,370.f});
+coins.push_back(l3coin1);
+
+sf::CircleShape l3coin2(15.f);
+l3coin2.setFillColor(sf::Color::Yellow);
+l3coin2.setPosition({640.f,330.f});
+coins.push_back(l3coin2);
+
+sf::CircleShape l3coin3(15.f);
+l3coin3.setFillColor(sf::Color::Yellow);
+l3coin3.setPosition({1730.f,280.f});
+coins.push_back(l3coin3);
+  }
+  else if(level>3)
+  {
+  //kazanma ekrani
   }
 }
 //oyuncu collision kismi
