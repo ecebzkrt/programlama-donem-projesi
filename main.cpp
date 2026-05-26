@@ -227,17 +227,17 @@ if(!groundTexture.loadFromFile("groundCover.png"))
 }
 sf::Sprite groundSprite(groundTexture);
 groundTexture.setRepeated(true);
-groundTexture.setSmooth(false); //tile ile olusturdugumuz icin kesik kesik olmasin diye
+groundTexture.setSmooth(false);
 
 const float TILE_SIZE=50.f;
 const int GROUND_TILE_COUNT=60.f; //60*50=3000px
-for(int i=0;i<GROUND_TILE_COUNT;i++)
-{sf::RectangleShape tile({TILE_SIZE,140.f});
-tile.setPosition({i*TILE_SIZE,500.f});
+for(int i=0;i<60;i++)
+{sf::RectangleShape tile({140.f,140.f});
+tile.setPosition({i*50.f,500.f});
 tile.setTexture(&groundTexture);
+tile.setTextureRect(sf::IntRect({0,0},{50,140}));
 platforms.push_back(tile);
 }
-
 
 //platform texture
 sf::Texture platformTexture;
@@ -346,8 +346,19 @@ if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
  score=0;
  life=3;
  player.setPosition({100.f,50.f});
+ platforms.clear();
+ enemies.clear();
+ coins.clear();
+ const float TILE_SIZE=50.f;
+const int GROUND_TILE_COUNT=60.f;
+for(int i=0;i<60;i++)
+{sf::RectangleShape tile({140.f,140.f});
+tile.setPosition({i*50.f,500.f});
+tile.setTexture(&groundTexture);
+tile.setTextureRect(sf::IntRect({0,0},{50,140}));
+platforms.push_back(tile);
+}
 resetGameElements(coins,enemies,platforms,ground,level);
-platforms.push_back(ground);
 }
 window.draw(endText);
 window.draw(tryAgainText);
@@ -425,7 +436,15 @@ if(player.getGlobalBounds().findIntersection(finishBox.getGlobalBounds()))
   platforms.clear();
   enemies.clear();
   coins.clear();
-  platforms.push_back(ground);
+  const float TILE_SIZE=50.f;
+  const int GROUND_TILE_COUNT=60.f;
+   for(int i=0;i<60;i++)
+   {sf::RectangleShape tile({140.f,140.f});
+   tile.setPosition({i*50.f,500.f});
+   tile.setTexture(&groundTexture);
+   tile.setTextureRect(sf::IntRect({0,0},{50,140}));
+   platforms.push_back(tile);
+   }
   if(level==2){
     sf::RectangleShape l2Platform1({250.f,30.f});
     l2Platform1.setPosition({400.f,450.f});
@@ -557,20 +576,16 @@ coins.push_back(l3coin3);
 isOnGround=false;
 for(auto& platform:platforms)
 {
-if(player.getGlobalBounds().findIntersection(platform.getGlobalBounds())&&velocityY>0)
+ auto intersect=player.getGlobalBounds().findIntersection(platform.getGlobalBounds());
+if(intersect)
 {
-  float groundFix=0.f; //oyuncuyu platformlara manuel olarak oturttum ama oyuncu zeminde havada kaliyordu.
-  
-   if(platform.getSize().x>1000.f)
-   {
-   groundFix=20.f;
-   }
-   player.setPosition({
-
-   player.getPosition().x,platform.getPosition().y-player.getSize().y+groundFix});
-   velocityY=0.f;
-   isOnGround=true;
-  }
+if(velocityY>=0&&player.getPosition().y+player.getSize().y<=(platform.getPosition().y+25.f))
+{
+player.setPosition({player.getPosition().x,platform.getPosition().y-player.getSize().y});
+velocityY=0.f;
+isOnGround=true;
+}
+}
 
 }
 
@@ -621,8 +636,8 @@ for (auto it = enemies.begin(); it != enemies.end(); ) {
     else if (player.getGlobalBounds().findIntersection(it->shape.getGlobalBounds())) {
         if (damageClock.getElapsedTime().asSeconds() > 1.f) {
             life--;
-            damageClock.restart();
-            player.setPosition({100.f, 50.f});
+          damageClock.restart();
+           player.setPosition({100.f, 50.f});
           
         }
         it++; 
@@ -642,7 +657,7 @@ window.draw(backgroundSprite);
 for(auto&platform:platforms)
 { 
   
-  if(platform.getSize().x>1000.f)
+  if(platform.getPosition().y>500.f)
   {groundSprite.setPosition(platform.getPosition());
     groundSprite.setScale({platform.getSize().x / groundTexture.getSize().x, 
    platform.getSize().y / groundTexture.getSize().y});
