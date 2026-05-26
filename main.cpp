@@ -4,7 +4,14 @@
 #include <iostream>
 #include <cmath>
 
-void resetGameElements(std::vector<sf::CircleShape>&coins,std::vector<sf::RectangleShape>&enemies)
+struct Enemy
+{sf::RectangleShape shape;
+  float speed;
+  bool movingRight;
+};
+std::vector<Enemy> enemies;
+
+void resetGameElements(std::vector<sf::CircleShape>&coins,std::vector<Enemy>&enemies)
 {
 coins.clear();
 enemies.clear();
@@ -15,7 +22,7 @@ coin1.setPosition({560.f,470.f});
 coins.push_back(coin1);
 sf::CircleShape coin2(15.f);
   coin2.setFillColor(sf::Color::Yellow);
-  coin2.setPosition({300.f,370.f});
+  coin2.setPosition({300.f,370.f}); 
   coins.push_back(coin2);
 
   sf::CircleShape coin3(15.f);
@@ -24,20 +31,23 @@ sf::CircleShape coin2(15.f);
   coins.push_back(coin3);
 
   //dusmanlari ilk konumlariyla yeniden dolduruyorum
-  sf::RectangleShape enemy1({50.f,50.f});
-enemy1.setFillColor(sf::Color::White);
-enemy1.setPosition({700.f,450.f});
-enemies.push_back(enemy1);
+  Enemy e1;
+e1.shape.setSize({50.f,50.f});
+e1.shape.setPosition({700.f,450.f});
+e1.speed=2.f;
+enemies.push_back(e1);
 
-sf::RectangleShape enemy2({50.f,50.f});
-enemy2.setFillColor(sf::Color::White);
-enemy2.setPosition({1350.f,300.f});
-enemies.push_back(enemy2);
+Enemy e2;
+e2.shape.setSize({50.f,50.f});
+e2.shape.setPosition({1350.f,300.f});
+e2.speed=2.f;
+enemies.push_back(e2);
 
-sf::RectangleShape enemy3({50.f,50.f});
-enemy3.setFillColor(sf::Color::White);
-enemy3.setPosition({1700.f,350.f});
-enemies.push_back(enemy3);
+Enemy e3;
+e3.shape.setSize({50.f,50.f});
+e3.shape.setPosition({1700.f,350.f});
+e3.speed=2.f;
+enemies.push_back(e3);
 
 }
 
@@ -123,26 +133,26 @@ playerSprite.setOrigin({playerTexture.getSize().x/2.f,(float)playerTexture.getSi
 
 
 //dusmanlar
-std::vector<sf::RectangleShape> enemies;
-sf::RectangleShape enemy1({50.f,50.f});
-enemy1.setFillColor(sf::Color::White);
-enemy1.setPosition({700.f,450.f});
+std::vector<Enemy> enemies;
+Enemy e1;
+e1.shape.setSize({50.f,50.f});
+e1.shape.setPosition({700.f,450.f});
+e1.speed=2.f;
+enemies.push_back(e1);
 
+Enemy e2;
+e2.shape.setSize({50.f,50.f});
+e1.shape.setPosition({1350.f,300.f});
+e1.speed=2.f;
+enemies.push_back(e2);
 
-sf::RectangleShape enemy2({50.f,50.f});
-enemy2.setFillColor(sf::Color::White);
-enemy2.setPosition({1350.f,300.f});
+Enemy e3;
+e3.shape.setSize({50.f,50.f});
+e3.shape.setPosition({1700.f,350.f});
+e3.speed=2.f;
+enemies.push_back(e3);
 
-
-sf::RectangleShape enemy3({50.f,50.f});
-enemy3.setFillColor(sf::Color::White);
-enemy3.setPosition({1700.f,350.f});
 resetGameElements(coins,enemies);
-//dusmanlara hareket ekliyorumm
-std::vector<float>enemyMovement;
-enemyMovement.push_back(2.f);
-enemyMovement.push_back(2.f);
-enemyMovement.push_back(2.f);
 
 sf::Texture enemyTexture;
 if(!enemyTexture.loadFromFile("enemy.png"))
@@ -227,6 +237,11 @@ titleText.setString("VALKYRIE");
 titleText.setPosition({210.f,180.f});
  //oyun bitis
  bool gameWon=false;
+ bool gameLost=false;
+ if(level>3)
+ {
+  gameWon=true;
+ }
 sf::Text startText(font);
 startText.setCharacterSize(24);
 startText.setFillColor(sf::Color::Red);
@@ -263,6 +278,42 @@ while(window.isOpen())
   window.display();
   continue;
  }
+//oyun bitis menu
+if(gameWon||life <=0)
+{window.clear();
+  window.setView(window.getDefaultView());
+  sf::Text endText(font);
+  endText.setCharacterSize(50);
+    if(gameWon)
+    { endText.setFillColor(sf::Color::Yellow);
+      endText.setString("YOU WIN");
+     }
+     else
+     {endText.setFillColor(sf::Color::Red);
+      endText.setString(" GAME OVER VALKYRIE");
+      }
+      endText.setPosition({220.f,200.f});
+
+sf::Text tryAgainText(font);
+tryAgainText.setCharacterSize(25);
+tryAgainText.setFillColor(sf::Color::White);
+tryAgainText.setString("Press R to try again ");
+tryAgainText.setPosition({190.f,300.f});
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
+{ gameWon=false;
+ level=1;
+ score=0;
+ life=3;
+ player.setPosition({100.f,50.f});
+resetGameElements(coins,enemies);
+platforms.clear();
+platforms.push_back(ground);
+}
+window.draw(endText);
+window.draw(tryAgainText);
+window.display();
+continue;
+}
 //sol hareket icin
 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 {
@@ -353,26 +404,29 @@ if(player.getGlobalBounds().findIntersection(finishBox.getGlobalBounds()))
     platforms.push_back(l2PLatform4);
 
     // level 2'de oyunun zorlasmasi icin dusman sayisini arttiriyorum.
+  Enemy l2e1;
+  l2e1.shape.setSize({50.f,50.f});
+  l2e1.shape.setPosition({600.f,450.f});
+  l2e1.speed=3.f;
+  enemies.push_back(l2e1);
 
-    sf::RectangleShape l2Enemy1({50.f,50.f});
-     l2Enemy1.setPosition({600.f,450.f});
-     enemies.push_back(l2Enemy1); 
-     enemyMovement.push_back(3.5f);  //hizlarini bilerek farkli ayarliyorum ki oldurmek zorlassin
-
-      sf::RectangleShape l2Enemy2({50.f,50.f});
-     l2Enemy2.setPosition({1100.f,300.f});
-     enemies.push_back(l2Enemy2);
-     enemyMovement.push_back(1.5f);
-    
-      sf::RectangleShape l2Enemy3({50.f,50.f});
-     l2Enemy3.setPosition({1400.f,350.f});
-     enemies.push_back(l2Enemy3);
-     enemyMovement.push_back(2.5f);
-
-      sf::RectangleShape l2Enemy4({50.f,50.f});
-     l2Enemy4.setPosition({1600.f,450.f});
-     enemies.push_back(l2Enemy4);
-     enemyMovement.push_back(3.5f);
+  Enemy l2e2;
+  l2e2.shape.setSize({50.f,50.f});
+  l2e2.shape.setPosition({1100.f,300.f});
+  l2e2.speed=1.5f;
+  enemies.push_back(l2e2);
+      
+  Enemy l2e3;
+  l2e3.shape.setSize({50.f,50.f});
+  l2e3.shape.setPosition({1400.f,350.f});
+  l2e3.speed=2.f;
+  enemies.push_back(l2e3);
+  
+  Enemy l2e4;
+  l2e4.shape.setSize({50.f,50.f});
+  l2e4.shape.setPosition({1600.f,450.f});
+  l2e4.speed=2.f;
+  enemies.push_back(l2e4);
 
      sf::CircleShape l2Coin1(15.f);
      l2Coin1.setFillColor({sf::Color::Yellow});
@@ -409,30 +463,35 @@ sf::RectangleShape l3platform5({150.f,30.f});
 
 //dusman ekliyorum
 
-sf::RectangleShape l3enemy1({50.f,50.f});
-l3enemy1.setPosition({350.f,380.f});
-enemies.push_back(l3enemy1);
-enemyMovement.push_back(4.5f);
+Enemy l3e1;
+  l3e1.shape.setSize({50.f,50.f});
+  l3e1.shape.setPosition({350.f,380.f});
+  l3e1.speed=4.5f;
+  enemies.push_back(l3e1);
+  Enemy l3e2;
+  l3e2.shape.setSize({50.f,50.f});
+  l3e2.shape.setPosition({650.f,330.f});
+  l3e2.speed=3.f;
+  enemies.push_back(l3e2);
+   
+  Enemy l3e3;
+  l3e3.shape.setSize({50.f,50.f});
+  l3e3.shape.setPosition({790.f,360.f});
+  l3e3.speed=3.5f;
+  enemies.push_back(l3e3);
 
-sf::RectangleShape l3enemy2({50.f,50.f});
-l3enemy2.setPosition({650.f,330.f});
-enemies.push_back(l3enemy2);
-enemyMovement.push_back(4.f);
+  Enemy l3e4;
+  l3e4.shape.setSize({50.f,50.f});
+  l3e4.shape.setPosition({1310.f,430.f});
+  l3e4.speed=5.f;
+  enemies.push_back(l3e4);
 
-sf::RectangleShape l3enemy3({50.f,50.f});
-l3enemy3.setPosition({790.f,360.f});
-enemies.push_back(l3enemy3);
-enemyMovement.push_back(3.5f);
+Enemy l3e5;
+  l3e5.shape.setSize({50.f,50.f});
+  l3e5.shape.setPosition({1770.f,280.f});
+  l3e5.speed=3.5f;
+  enemies.push_back(l3e5);
 
-sf::RectangleShape l3enemy4({50.f,50.f});
-l3enemy4.setPosition({1310.f,430.f});
-enemies.push_back(l3enemy4);
-enemyMovement.push_back(5.f);
-
-sf::RectangleShape l3enemy5({50.f,50.f});
-l3enemy5.setPosition({1770.f,280.f});
-enemies.push_back(l3enemy5);
-enemyMovement.push_back(3.5f);
 //coin ekliyorum
 sf::CircleShape l3coin1(15.f);
 l3coin1.setFillColor(sf::Color::Yellow);
@@ -451,7 +510,7 @@ coins.push_back(l3coin3);
   }
   else if(level>3)
   {
-  //kazanma ekrani
+  gameWon=true;
   }
 }
 //oyuncu collision kismi
@@ -489,14 +548,14 @@ else{
 }
 }
 //dusman hareket 
-for(int i=0;i<enemies.size();i++)
-{
-enemies[i].move({enemyMovement[i],0.f});
-//dusman platformun sonuna gelince geri donsun diye
-if(enemies[i].getPosition().x<=0.f||enemies[i].getPosition().x>=2900)
-{
-enemyMovement[i]*=-1.f;
-}
+
+for (auto& enemy : enemies) {
+    enemy.shape.move({enemy.speed, 0.f});
+
+    // Sınır kontrolü (Artık hız kendi içinde olduğu için daha güvenli)
+    if (enemy.shape.getPosition().x <= 0.f || enemy.shape.getPosition().x >= 2900.f) {
+        enemy.speed *= -1.f; // Yön değiştir
+    }
 }
 //dusman kontrolu
 sf::RectangleShape sword({20.f,40.f});
@@ -510,14 +569,14 @@ else
 sword.setPosition({player.getPosition().x-15.f,player.getPosition().y+35.f});
 }
 for(auto it=enemies.begin();it!=enemies.end();)
-{
-if(isAttacking&&sword.getGlobalBounds().findIntersection(it->getGlobalBounds()))
+{ 
+if(isAttacking&&sword.getGlobalBounds().findIntersection(it->shape.getGlobalBounds()))
 {
  it=enemies.erase(it);
  score+=2;
 }
 else { 
-  if(player.getGlobalBounds().findIntersection(it->getGlobalBounds())&&damageClock.getElapsedTime().asSeconds()>1.f)
+  if(player.getGlobalBounds().findIntersection(it->shape.getGlobalBounds())&&damageClock.getElapsedTime().asSeconds()>1.f)
 {
 life--;
 score=0;
@@ -527,8 +586,9 @@ velocityY=0.f;
 resetGameElements(coins,enemies);
 if(life<=0)
 {
+  gameLost=true;
 life=3;
-score=0;
+score=0; 
 player.setPosition({100.f,50.f});
 resetGameElements(coins,enemies);
 }
@@ -573,7 +633,7 @@ window.draw(flagSprite);
 //enemy cizim
 for(auto&enemy:enemies)
 {
-enemySprite.setPosition(enemy.getPosition());
+enemySprite.setPosition(enemy.shape.getPosition());
 enemySprite.setScale({0.12f,0.12f});
 window.draw(enemySprite);
 }
