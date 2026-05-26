@@ -11,10 +11,13 @@ struct Enemy
 };
 std::vector<Enemy> enemies;
 
-void resetGameElements(std::vector<sf::CircleShape>&coins,std::vector<Enemy>&enemies)
+void resetGameElements(std::vector<sf::CircleShape>&coins,std::vector<Enemy>&enemies,
+  std::vector<sf::RectangleShape>&platforms,sf::RectangleShape& ground,int level)
 {
 coins.clear();
 enemies.clear();
+platforms.clear();
+platforms.push_back(ground);
 //coinleri ilk konumlariyla yeniden dolduruyorum
 sf::CircleShape coin1(15.f);
 coin1.setFillColor(sf::Color::Yellow);
@@ -48,7 +51,33 @@ e3.shape.setSize({50.f,50.f});
 e3.shape.setPosition({1700.f,350.f});
 e3.speed=2.f;
 enemies.push_back(e3);
+if(level==1)
+{
+sf::RectangleShape platform1({200.f,50.f});
+platform1.setFillColor(sf::Color::Red);
+platform1.setPosition({250.f,400.f});
+platforms.push_back(platform1);
 
+sf::RectangleShape platform2({200.f,50.f});
+platform2.setFillColor(sf::Color::Magenta);
+platform2.setPosition({500.f,430.f});
+platforms.push_back(platform2);
+
+sf::RectangleShape platform3({200.f,50.f});
+platform3.setFillColor(sf::Color::Cyan);
+platform3.setPosition({900.f,450.f});
+platforms.push_back(platform3);
+
+sf::RectangleShape platform4({150.f,50.f});
+platform4.setFillColor(sf::Color::White);
+platform4.setPosition({1250.f,350.f});
+platforms.push_back(platform4);
+
+sf::RectangleShape platform5({250.f,50.f});
+platform5.setFillColor(sf::Color::Red);
+platform5.setPosition({1500.f,400.f});
+platforms.push_back(platform5);
+}
 }
 
 int main(){
@@ -152,7 +181,7 @@ e3.shape.setPosition({1700.f,350.f});
 e3.speed=2.f;
 enemies.push_back(e3);
 
-resetGameElements(coins,enemies);
+resetGameElements(coins,enemies,platforms,ground,level);
 
 sf::Texture enemyTexture;
 if(!enemyTexture.loadFromFile("enemy.png"))
@@ -283,16 +312,16 @@ if(gameWon||life <=0)
 {window.clear();
   window.setView(window.getDefaultView());
   sf::Text endText(font);
-  endText.setCharacterSize(50);
+  endText.setCharacterSize(30);
     if(gameWon)
     { endText.setFillColor(sf::Color::Yellow);
-      endText.setString("YOU WIN");
+      endText.setString("    YOU WIN");
      }
      else
      {endText.setFillColor(sf::Color::Red);
       endText.setString(" GAME OVER VALKYRIE");
       }
-      endText.setPosition({220.f,200.f});
+      endText.setPosition({90.f,200.f});
 
 sf::Text tryAgainText(font);
 tryAgainText.setCharacterSize(25);
@@ -305,8 +334,7 @@ if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
  score=0;
  life=3;
  player.setPosition({100.f,50.f});
-resetGameElements(coins,enemies);
-platforms.clear();
+resetGameElements(coins,enemies,platforms,ground,level);
 platforms.push_back(ground);
 }
 window.draw(endText);
@@ -355,7 +383,7 @@ if(player.getPosition().y>700.f)
 player.setPosition({100.f,50.f});
 velocityY=0.f;
 score=0;
-resetGameElements(coins,enemies);
+resetGameElements(coins,enemies,platforms,ground,level);
 }
 
 float cameraX=player.getPosition().x+player.getSize().x/2;
@@ -557,7 +585,7 @@ for (auto& enemy : enemies) {
         enemy.speed *= -1.f; // Yön değiştir
     }
 }
-//dusman kontrolu
+
 sf::RectangleShape sword({20.f,40.f});
 sword.setFillColor(sf::Color::White);
 if(facingRight)
@@ -568,33 +596,28 @@ else
 {
 sword.setPosition({player.getPosition().x-15.f,player.getPosition().y+35.f});
 }
-for(auto it=enemies.begin();it!=enemies.end();)
-{ 
-if(isAttacking&&sword.getGlobalBounds().findIntersection(it->shape.getGlobalBounds()))
-{
- it=enemies.erase(it);
- score+=2;
-}
-else { 
-  if(player.getGlobalBounds().findIntersection(it->shape.getGlobalBounds())&&damageClock.getElapsedTime().asSeconds()>1.f)
-{
-life--;
-score=0;
-damageClock.restart();
-player.setPosition({100.f,50.f});
-velocityY=0.f;
-resetGameElements(coins,enemies);
-if(life<=0)
-{
-  gameLost=true;
-life=3;
-score=0; 
-player.setPosition({100.f,50.f});
-resetGameElements(coins,enemies);
-}
-}
-it++;
-}
+//dusman kontrolu
+for (auto it = enemies.begin(); it != enemies.end(); ) {
+    bool erased = false;
+    // Saldırı kontrolü
+    if (isAttacking && sword.getGlobalBounds().findIntersection(it->shape.getGlobalBounds())) {
+        it = enemies.erase(it);
+        score += 2;
+        erased = true;
+    } 
+    // Oyuncuya değme kontrolü
+    else if (player.getGlobalBounds().findIntersection(it->shape.getGlobalBounds())) {
+        if (damageClock.getElapsedTime().asSeconds() > 1.f) {
+            life--;
+            damageClock.restart();
+            player.setPosition({100.f, 50.f});
+          
+        }
+        it++; 
+    } 
+    else {
+        it++; 
+    }
 }
 scoreText.setString("score: "+std::to_string(score));
 scoreText.setPosition({cameraX-390.f,10.f});
