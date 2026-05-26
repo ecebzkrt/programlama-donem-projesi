@@ -14,10 +14,10 @@ std::vector<Enemy> enemies;
 void resetGameElements(std::vector<sf::CircleShape>&coins,std::vector<Enemy>&enemies,
   std::vector<sf::RectangleShape>&platforms,sf::RectangleShape& ground,int level)
 {
+  
 coins.clear();
 enemies.clear();
 platforms.clear();
-platforms.push_back(ground);
 //coinleri ilk konumlariyla yeniden dolduruyorum
 sf::CircleShape coin1(15.f);
 coin1.setFillColor(sf::Color::Yellow);
@@ -94,7 +94,6 @@ sf::RectangleShape ground({3000.f,140.f});
 ground.setFillColor(sf::Color::Blue);
 ground.setPosition({0.f,500.f});
 std::vector<sf::RectangleShape>platforms;
-platforms.push_back(ground);
 
 //platformlar
 sf::RectangleShape platform1({200.f,50.f});
@@ -219,14 +218,27 @@ backgroundTexture.setRepeated(true);
 sf::Sprite backgroundSprite(backgroundTexture);
 backgroundSprite.setTextureRect(sf::IntRect({0,0},{6000,1000}));
 backgroundSprite.setScale({0.4f,0.7f});
+
 //zemin texture
 sf::Texture groundTexture;
 if(!groundTexture.loadFromFile("groundCover.png"))
 {
   return -1;
 }
-groundTexture.setRepeated(true);
 sf::Sprite groundSprite(groundTexture);
+groundTexture.setRepeated(true);
+groundTexture.setSmooth(false); //tile ile olusturdugumuz icin kesik kesik olmasin diye
+
+const float TILE_SIZE=50.f;
+const int GROUND_TILE_COUNT=60.f; //60*50=3000px
+for(int i=0;i<GROUND_TILE_COUNT;i++)
+{sf::RectangleShape tile({TILE_SIZE,140.f});
+tile.setPosition({i*TILE_SIZE,500.f});
+tile.setTexture(&groundTexture);
+platforms.push_back(tile);
+}
+
+
 //platform texture
 sf::Texture platformTexture;
 if(!platformTexture.loadFromFile("platformCover.png"))
