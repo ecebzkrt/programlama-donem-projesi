@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -269,6 +270,14 @@ sf::Texture flagTexture;
  return -1;
  }
  sf::Sprite flagSprite(flagTexture);
+//coin ses
+sf::SoundBuffer coinBuffer;
+if(!coinBuffer.loadFromFile("coinCollect.wav"))
+{
+//calimazsa oyun kapanmasin
+}
+sf::Sound coinSound(coinBuffer);
+
 //oyun baslangic menusu
 bool gameStart=false;
 sf::Text titleText(font);
@@ -596,6 +605,7 @@ if(player.getGlobalBounds().findIntersection(it->getGlobalBounds()))
 {
  it=coins.erase(it);
  score++;
+ coinSound.play();
 }
 else{
 
