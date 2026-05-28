@@ -18,8 +18,10 @@ void resetGameElements(std::vector<sf::CircleShape>&coins,std::vector<Enemy>&ene
   
 coins.clear();
 enemies.clear();
-platforms.clear();
+//platforms.clear(); bu satiri kaldiriyorum cunku oyun sonsuz donguye giriyor
 //coinleri ilk konumlariyla yeniden dolduruyorum
+if(level==1)
+{
 sf::CircleShape coin1(15.f);
 coin1.setFillColor(sf::Color::Yellow);
 coin1.setPosition({560.f,470.f});
@@ -52,8 +54,7 @@ e3.shape.setSize({50.f,50.f});
 e3.shape.setPosition({1700.f,350.f});
 e3.speed=2.f;
 enemies.push_back(e3);
-if(level==1)
-{
+
 sf::RectangleShape platform1({200.f,50.f});
 platform1.setFillColor(sf::Color::Red);
 platform1.setPosition({250.f,400.f});
@@ -79,7 +80,131 @@ platform5.setFillColor(sf::Color::Red);
 platform5.setPosition({1500.f,400.f});
 platforms.push_back(platform5);
 }
+else if(level==2)
+{
+sf::RectangleShape l2Platform1({250.f,30.f});
+    l2Platform1.setPosition({400.f,450.f});
+    platforms.push_back(l2Platform1);
+
+    sf::RectangleShape l2Platform2({200.f,30.f});
+    l2Platform2.setPosition({800.f,350.f});
+    platforms.push_back(l2Platform2);
+    
+    sf::RectangleShape l2PLatform3({150.f,30.f});
+    l2PLatform3.setPosition({1200.f,400.f});
+    platforms.push_back(l2PLatform3);
+
+    sf::RectangleShape l2PLatform4({150.f,30.f});
+    l2PLatform4.setPosition({1400.f,450.f});
+    platforms.push_back(l2PLatform4);
+
+    // level 2'de oyunun zorlasmasi icin dusman sayisini arttiriyorum.
+  Enemy l2e1;
+  l2e1.shape.setSize({50.f,50.f});
+  l2e1.shape.setPosition({600.f,450.f});
+  l2e1.speed=3.f;
+  enemies.push_back(l2e1);
+
+  Enemy l2e2;
+  l2e2.shape.setSize({50.f,50.f});
+  l2e2.shape.setPosition({1100.f,300.f});
+  l2e2.speed=1.5f;
+  enemies.push_back(l2e2);
+      
+  Enemy l2e3;
+  l2e3.shape.setSize({50.f,50.f});
+  l2e3.shape.setPosition({1400.f,350.f});
+  l2e3.speed=2.f;
+  enemies.push_back(l2e3);
+  
+  Enemy l2e4;
+  l2e4.shape.setSize({50.f,50.f});
+  l2e4.shape.setPosition({1600.f,450.f});
+  l2e4.speed=2.f;
+  enemies.push_back(l2e4);
+
+     sf::CircleShape l2Coin1(15.f);
+     l2Coin1.setFillColor({sf::Color::Yellow});
+     l2Coin1.setPosition({850.f,300.f});
+     coins.push_back(l2Coin1);
+
+     sf::CircleShape l2Coin2(15.f);
+     l2Coin2.setFillColor(sf::Color::Yellow);
+     l2Coin2.setPosition({1350.f,350.f});
+     coins.push_back(l2Coin2);
 }
+else
+{
+sf::RectangleShape l3platform1({150.f,30.f});
+   l3platform1.setPosition({350.f,400.f});
+    platforms.push_back(l3platform1);
+
+    sf::RectangleShape l3platform2({200.f,50.f});
+   l3platform2.setPosition({650.f,350.f});
+    platforms.push_back(l3platform2);
+
+    sf::RectangleShape l3platform3({170.f,80.f});
+   l3platform3.setPosition({800.f,380.f});
+    platforms.push_back(l3platform3);
+
+    sf::RectangleShape l3platform4({230.f,60.f});
+   l3platform4.setPosition({1300.f,430.f});
+    platforms.push_back(l3platform4);
+
+    sf::RectangleShape l3platform5({150.f,30.f});
+   l3platform5.setPosition({1750.f,400.f});
+    platforms.push_back(l3platform5);
+
+//dusman ekliyorum
+
+Enemy l3e1;
+  l3e1.shape.setSize({50.f,50.f});
+  l3e1.shape.setPosition({350.f,380.f});
+  l3e1.speed=4.5f;
+  enemies.push_back(l3e1);
+  Enemy l3e2;
+  l3e2.shape.setSize({50.f,50.f});
+  l3e2.shape.setPosition({650.f,330.f});
+  l3e2.speed=3.f;
+  enemies.push_back(l3e2);
+   
+  Enemy l3e3;
+  l3e3.shape.setSize({50.f,50.f});
+  l3e3.shape.setPosition({790.f,360.f});
+  l3e3.speed=3.5f;
+  enemies.push_back(l3e3);
+
+  Enemy l3e4;
+  l3e4.shape.setSize({50.f,50.f});
+  l3e4.shape.setPosition({1310.f,430.f});
+  l3e4.speed=5.f;
+  enemies.push_back(l3e4);
+
+  Enemy l3e5;
+  l3e5.shape.setSize({50.f,50.f});
+  l3e5.shape.setPosition({1770.f,280.f});
+  l3e5.speed=3.5f;
+  enemies.push_back(l3e5);
+
+//coin ekliyorum
+sf::CircleShape l3coin1(15.f);
+l3coin1.setFillColor(sf::Color::Yellow);
+l3coin1.setPosition({340.f,370.f});
+coins.push_back(l3coin1);
+
+sf::CircleShape l3coin2(15.f);
+l3coin2.setFillColor(sf::Color::Yellow);
+l3coin2.setPosition({640.f,330.f});
+coins.push_back(l3coin2);
+
+sf::CircleShape l3coin3(15.f);
+l3coin3.setFillColor(sf::Color::Yellow);
+l3coin3.setPosition({1730.f,280.f});
+coins.push_back(l3coin3);
+}
+}
+
+
 
 int main(){
   int level=1;
@@ -422,6 +547,17 @@ if(player.getPosition().y>700.f)
 player.setPosition({100.f,50.f});
 velocityY=0.f;
 score=0;
+level=1; //oyuncu uc kere yandiktan sonra en basa donucek
+platforms.clear();
+enemies.clear();
+coins.clear();
+for(int i=0;i<60;i++)
+{sf::RectangleShape tile({140.f,140.f});
+tile.setPosition({i*50.f,500.f});
+tile.setTexture(&groundTexture);
+tile.setTextureRect(sf::IntRect({0,0},{50,140}));
+platforms.push_back(tile);
+}
 resetGameElements(coins,enemies,platforms,ground,level);
 }
 
@@ -520,7 +656,7 @@ if(player.getGlobalBounds().findIntersection(finishBox.getGlobalBounds()))
    l3platform1.setPosition({350.f,400.f});
     platforms.push_back(l3platform1);
 
-sf::RectangleShape l3platform2({200.f,50.f});
+    sf::RectangleShape l3platform2({200.f,50.f});
    l3platform2.setPosition({650.f,350.f});
     platforms.push_back(l3platform2);
 
@@ -528,11 +664,11 @@ sf::RectangleShape l3platform2({200.f,50.f});
    l3platform3.setPosition({800.f,380.f});
     platforms.push_back(l3platform3);
 
-sf::RectangleShape l3platform4({230.f,60.f});
+    sf::RectangleShape l3platform4({230.f,60.f});
    l3platform4.setPosition({1300.f,430.f});
     platforms.push_back(l3platform4);
 
-sf::RectangleShape l3platform5({150.f,30.f});
+    sf::RectangleShape l3platform5({150.f,30.f});
    l3platform5.setPosition({1750.f,400.f});
     platforms.push_back(l3platform5);
 
@@ -561,7 +697,7 @@ Enemy l3e1;
   l3e4.speed=5.f;
   enemies.push_back(l3e4);
 
-Enemy l3e5;
+  Enemy l3e5;
   l3e5.shape.setSize({50.f,50.f});
   l3e5.shape.setPosition({1770.f,280.f});
   l3e5.speed=3.5f;
@@ -643,21 +779,34 @@ sword.setPosition({player.getPosition().x-15.f,player.getPosition().y+35.f});
 //dusman kontrolu
 for (auto it = enemies.begin(); it != enemies.end(); ) {
     bool erased = false;
-    // Saldırı kontrolü
+    // Saldırı kontrolu
     if (isAttacking && sword.getGlobalBounds().findIntersection(it->shape.getGlobalBounds())) {
-        it = enemies.erase(it);
-        score += 2;
-        erased = true;
+      it = enemies.erase(it);
+      score += 2;
+      erased = true;
     } 
-    // Oyuncuya değme kontrolü
-    else if (player.getGlobalBounds().findIntersection(it->shape.getGlobalBounds())) {
-        if (damageClock.getElapsedTime().asSeconds() > 1.f) {
+    // Oyuncuya degme kontrolu
+  else if (player.getGlobalBounds().findIntersection(it->shape.getGlobalBounds())) {
+       if (damageClock.getElapsedTime().asSeconds() > 1.f) {
             life--;
-          damageClock.restart();
-           player.setPosition({100.f, 50.f});
-          
-        }
-        it++; 
+            damageClock.restart();
+            player.setPosition({100.f, 50.f});
+            velocityY=0.f;
+            platforms.clear();
+            enemies.clear();
+            coins.clear();
+          for(int i=0;i<60;i++)
+          {
+             sf::RectangleShape tile({140.f,140.f});
+            tile.setPosition({i*50.f,500.f});
+            tile.setTexture(&groundTexture);
+            tile.setTextureRect(sf::IntRect({0,0},{50,140}));
+            platforms.push_back(tile);
+            }
+resetGameElements(coins,enemies,platforms,ground,level);
+
+    }
+    it++; 
     } 
     else {
         it++; 
