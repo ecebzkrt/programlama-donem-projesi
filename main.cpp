@@ -170,8 +170,8 @@ enemies.push_back(e1);
 
 Enemy e2;
 e2.shape.setSize({50.f,50.f});
-e1.shape.setPosition({1350.f,300.f});
-e1.speed=2.f;
+e2.shape.setPosition({1350.f,300.f});
+e2.speed=2.f;
 enemies.push_back(e2);
 
 Enemy e3;
