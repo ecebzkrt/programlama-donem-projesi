@@ -298,6 +298,12 @@ startText.setFillColor(sf::Color::Red);
 startText.setString("press ENTER to start warrior");
 startText.setPosition({80.f,280.f});
 
+ sf::Text infoText(font);
+ infoText.setCharacterSize(16);
+ infoText.setFillColor(sf::Color::Blue);
+ infoText.setString("press SPACE to gird on your sword valkyrie!");
+ infoText.setPosition({55.f,350.f});
+
 //can hakki
 int life=3;
 bool isAttacking=false;
@@ -325,6 +331,7 @@ while(window.isOpen())
   window.setView(window.getDefaultView());
   window.draw(titleText);
   window.draw(startText);
+  window.draw(infoText);
   window.display();
   continue;
  }
